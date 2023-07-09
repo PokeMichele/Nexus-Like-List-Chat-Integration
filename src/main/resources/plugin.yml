@@ -1,0 +1,3 @@
+name: Nexus-Like List Chat Integration
+version: '${project.version}'
+main: it.ilsommo.nexuslike_list_chat_integration.Nexus_LikeListChatIntegration
