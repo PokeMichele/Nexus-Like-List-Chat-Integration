@@ -1,5 +1,5 @@
 name: Nexus-Like_List_Chat_Integration
-version: '${project.version}'
+version: '1.0-SNAPSHOT'
 main: it.ilsommo.nexuslike_list_chat_integration.Nexus_LikeListChatIntegration
 api-version: 1.18
 author: Il Sommo

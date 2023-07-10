@@ -13,35 +13,39 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static sun.audio.AudioPlayer.player;
 
 public final class Nexus_LikeListChatIntegration extends JavaPlugin {
 
     private Map<UUID, Long> lastRewardMap;
+
     @Override
     public void onEnable() {
-        System.out.println("List Chat Integration hase been enabled");
+        System.out.println("List Chat Integration has been enabled");
+        this.saveDefaultConfig();
         lastRewardMap = new HashMap<>();
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                    if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
-                        continue;
-                    }
-
-                    TextComponent message = new TextComponent("Se ti stati divertendo su questo Server votalo sulle seguenti liste per farlo crescere!:");
+                    TextComponent message = new TextComponent("Se ti stai divertendo su questo Server votalo sulle seguenti liste per farlo crescere!:\n");
                     message.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
 
-                    TextComponent link = new TextComponent("https://www.prova.com");
-                    link.setColor(net.md_5.bungee.api.ChatColor.GREEN);
-                    link.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/giveGold"));
-                    message.addExtra(link);
-
+                    List<String> links = getConfig().getStringList("links");
+                    for (String linkString : links) {
+                        TextComponent link = new TextComponent(linkString);
+                        link.setColor(net.md_5.bungee.api.ChatColor.GREEN);
+                        link.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, linkString));
+                        message.addExtra(link);
+                        message.addExtra("\n"); // Aggiungi uno spazio tra i link
+                    }
+                    TextComponent confirmation = new TextComponent("[Conferma]");
+                    confirmation.setColor(net.md_5.bungee.api.ChatColor.GOLD);
+                    confirmation.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/confirmclick"));
+                    message.addExtra(confirmation);
                     player.spigot().sendMessage(message);
                 }
             }
@@ -50,24 +54,29 @@ public final class Nexus_LikeListChatIntegration extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("givegold")) {
+        if (cmd.getName().equalsIgnoreCase("confirmclick")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                long lastRewardTime = lastRewardMap.getOrDefault(player.getUniqueId(), 0L);
-                if (System.currentTimeMillis() - lastRewardTime < 24 * 60 * 60 * 1000) {
-                    player.sendMessage("Hai già ricevuto la tua ricompensa di oggi per il voto. Riprova domani :)");
-                    return true;
-                }
-                lastRewardMap.put(player.getUniqueId(), System.currentTimeMillis());
-                player.getInventory().addItem(new ItemStack(Material.GOLD_INGOT));
-                return true;
+                giveGold(player);
             }
         }
-        return false;
+        return true;
+    }
+
+    private void giveGold(Player player) {
+        if(player.getGameMode().equals(GameMode.SURVIVAL)){
+            long lastRewardTime = lastRewardMap.getOrDefault(player.getUniqueId(), 0L);
+            if (System.currentTimeMillis() - lastRewardTime < 24 * 60 * 60 * 1000) {
+                player.sendMessage("Hai già ricevuto la tua ricompensa di oggi per il voto. Riprova domani :)");
+                return;
+            }
+            lastRewardMap.put(player.getUniqueId(), System.currentTimeMillis());
+            player.getInventory().addItem(new ItemStack(Material.GOLD_INGOT));
+        }
     }
 
     @Override
     public void onDisable() {
-        System.out.println("List Chat Integration hase been disabled");
+        System.out.println("List Chat Integration has been disabled");
     }
 }
