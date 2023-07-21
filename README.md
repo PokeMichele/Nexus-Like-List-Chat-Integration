@@ -1,5 +1,6 @@
 # Nexus-Like List Chat Integration
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) ![Environment-Server](https://img.shields.io/badge/environment-server-orangered?style=flat-square) [![License: GPL v3](https://img.shields.io/badge/License-GPL_v3-orange.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
 Nexus-Like List Chat Integration is a Minecraft Plugin that sends a chat message every 20 minutes with a text and some Links. Once a day you can also redeem a Gold Ingot from the chat message.
 
 ## Use Cases
