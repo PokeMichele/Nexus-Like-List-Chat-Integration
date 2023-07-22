@@ -6,15 +6,19 @@ Nexus-Like List Chat Integration is a Minecraft Plugin that sends a chat message
 ## Use Cases
 The Plugin is inspired to the old NexusCraft votifier, so you can use this plugin as a "website link spammer", but also as a votifier for all the websites that doesn't have a votifier API to connect to the most popular plugins.
 
+(If you think about it there are a lot of Server Lists, but only a small part support votifier APIs)
+
 ## Usage
 This is how the "config.yml" file appears at first
 
+    message: 'Se ti stai divertendo su questo Server votalo sulle seguenti liste per farlo crescere!:'
+    confirmation-text: 'Conferma'
+    message-reward-received: 'Hai già ricevuto la tua ricompensa di oggi per il voto. Riprova domani :)'
     links:
-    - https://www.prova.it
-    - https://www.prova2.it
+      - https://www.prova.it
+      - https://www.prova2.it
 
-The Auto-Remover is enabled by default and the default time is set to 10 minutes.
-If you want you can change the time or you can completely disable the Auto-Remover.
+You can also customize the messages in the language you prefer.
 
 ## Credits & License
 Nexus-Like List Chat Integration is released under [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
